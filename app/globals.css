@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ── Design Tokens (Tailwind 4 @theme) ─────────────────────────────────────── */
+@theme {
+  /* shadcn/ui color tokens — mapped through HSL variables */
+  --color-border: hsl(var(--border));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-ring: hsl(var(--ring));
+  --color-input: hsl(var(--input));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  /* Brand palette — generates bg-brand, text-brand, border-brand, etc. */
+  --color-brand: #E91E63;
+  --color-brand-dark: #880E4F;
+  --color-brand-light: #F48FB1;
+  --color-brand-accent: #00E676;
+  --color-brand-accent-dark: #00C853;
+  --color-brand-success: #20C964;
+
+  /* Surfaces */
+  --color-surface: #FFFFFF;
+  --color-bg-page: #F5F7F9;
+
+  /* Typography scale */
+  --color-text-body: #263238;
+  --color-text-subtle: #9E9E9E;
+  --color-text-faint: #B0BEC5;
+
+  /* Borders */
+  --color-border-subtle: #E4E8EC;
+  --color-border-strong: #C9D0D8;
+
+  /* Fonts */
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-display: var(--font-syne), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+
+  /* Border radius */
+  --radius-xl: 20px;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-pill: 9999px;
+}
+
+/* ── CSS Variable Defaults ────────────────────────────────────────────────── */
+:root {
+  /* shadcn/ui HSL tokens — tuned to Qwikkle brand */
+  --background: 210 17% 97%;        /* #F5F7F9 */
+  --foreground: 200 19% 18%;        /* #263238 */
+
+  --card: 0 0% 100%;
+  --card-foreground: 200 19% 18%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 200 19% 18%;
+
+  --primary: 340 82% 52%;           /* #E91E63 */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 210 17% 95%;
+  --secondary-foreground: 200 19% 18%;
+
+  --muted: 210 17% 95%;
+  --muted-foreground: 0 0% 62%;     /* #9E9E9E */
+
+  --accent: 151 100% 45%;           /* #00E676 */
+  --accent-foreground: 200 19% 18%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 210 17% 91%;            /* #E4E8EC */
+  --input: 210 17% 91%;
+  --ring: 340 82% 52%;
+
+  --radius: 0.75rem;                /* 12px — matches THEME.md */
+
+  /* Raw brand tokens for inline styles and complex CSS */
+  --color-primary-glow: rgba(233, 30, 99, 0.15);
+  --color-primary-subtle: rgba(233, 30, 99, 0.06);
+  --color-accent-glow: rgba(0, 230, 118, 0.18);
+  --color-accent-subtle: rgba(0, 230, 118, 0.08);
+  --color-bg-overlay: rgba(245, 247, 249, 0.85);
+
+  --shadow-card: 0 2px 16px rgba(38, 50, 56, 0.06);
+  --shadow-card-hover: 0 8px 32px rgba(38, 50, 56, 0.10);
+  --shadow-primary: 0 4px 24px rgba(233, 30, 99, 0.20);
+  --shadow-accent: 0 4px 24px rgba(0, 230, 118, 0.20);
+}
+
+/* ── Base styles ──────────────────────────────────────────────────────────── */
+body {
+  background: #F5F7F9;
+  color: #263238;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
