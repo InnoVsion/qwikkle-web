@@ -14,6 +14,23 @@ test('landing page renders without errors', async ({ page }) => {
   await expect(page.getByTestId('hero-section')).toBeVisible();
 });
 
+test('features page renders without errors', async ({ page }) => {
+  await page.goto('/features');
+  await expect(page).not.toHaveTitle(/Error/);
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+});
+
+test('privacy page renders without errors', async ({ page }) => {
+  await page.goto('/privacy');
+  await expect(page).not.toHaveTitle(/Error/);
+  await expect(page.getByRole('heading', { name: /privacy policy/i })).toBeVisible();
+});
+
+test('pricing page renders without errors', async ({ page }) => {
+  await page.goto('/pricing');
+  await expect(page).not.toHaveTitle(/Error/);
+});
+
 test('unauthenticated /admin redirects to /login', async ({ page }) => {
   await page.goto('/admin');
   await expect(page).toHaveURL(/\/login/);
