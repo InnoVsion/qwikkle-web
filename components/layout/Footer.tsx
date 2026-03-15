@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { AppStoreBadge } from '@/components/shared/AppStoreBadge';
 
 // Footer uses <a> tags instead of Next.js <Link> so placeholder routes (pages
@@ -61,13 +62,12 @@ export function Footer() {
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2">
-              <span
-                className="h-2.5 w-2.5 rounded-full"
-                style={{
-                  background: '#E91E63',
-                  boxShadow: '0 0 8px rgba(233, 30, 99, 0.4)',
-                }}
-                aria-hidden="true"
+              <Image
+                src="/qwikkle-logo.jpeg"
+                alt="Qwikkle"
+                width={28}
+                height={28}
+                className="rounded-lg"
               />
               <span className="font-display text-lg font-bold tracking-tight text-[#263238]">
                 Qwikkle

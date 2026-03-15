@@ -101,6 +101,19 @@
   --shadow-card-hover: 0 8px 32px rgba(38, 50, 56, 0.10);
   --shadow-primary: 0 4px 24px rgba(233, 30, 99, 0.20);
   --shadow-accent: 0 4px 24px rgba(0, 230, 118, 0.20);
+
+  /* Admin semantic colors */
+  --color-danger:         #F44336;
+  --color-danger-subtle:  rgba(244, 67, 54, 0.06);
+  --color-danger-border:  rgba(244, 67, 54, 0.20);
+
+  --color-warning:        #FF9800;
+  --color-warning-subtle: rgba(255, 152, 0, 0.06);
+  --color-warning-border: rgba(255, 152, 0, 0.20);
+
+  --color-info:           #2196F3;
+  --color-info-subtle:    rgba(33, 150, 243, 0.06);
+  --color-info-border:    rgba(33, 150, 243, 0.20);
 }
 
 /* ── Base styles ──────────────────────────────────────────────────────────── */

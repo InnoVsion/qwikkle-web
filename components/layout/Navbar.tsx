@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
@@ -37,13 +38,13 @@ export function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span
-            className="h-2.5 w-2.5 rounded-full"
-            style={{
-              background: '#E91E63',
-              boxShadow: '0 0 8px rgba(233, 30, 99, 0.5)',
-            }}
-            aria-hidden="true"
+          <Image
+            src="/qwikkle-logo.jpeg"
+            alt="Qwikkle"
+            width={28}
+            height={28}
+            className="rounded-lg"
+            priority
           />
           <span className="font-display text-lg font-bold tracking-tight text-[#263238]">
             Qwikkle

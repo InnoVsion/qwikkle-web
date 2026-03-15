@@ -1,0 +1,175 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
+import { cn } from '@/lib/utils/cn';
+import { loginSchema, type LoginInput } from '@/lib/validations/auth.schemas';
+
+// Temporary: set to true to preview the error banner UI.
+// Remove this when real auth is wired up.
+const PREVIEW_ERROR_STATE = false;
+
+export function LoginForm(): React.ReactElement {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = (): void => {
+    setIsLoading(true);
+    // Simulated network delay — replaced with real adminLogin() when backend is ready.
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push('/admin');
+    }, 1000);
+  };
+
+  return (
+    <div
+      className="w-full max-w-md rounded-2xl border border-[#E4E8EC] bg-white p-8 md:p-10"
+      style={{ boxShadow: '0 2px 16px rgba(38, 50, 56, 0.06)' }}
+    >
+      {/* Heading */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#263238]">Welcome back</h1>
+        <p className="mt-1 text-sm text-[#9E9E9E]">Sign in to your admin account</p>
+      </div>
+
+      {/* Error banner */}
+      {PREVIEW_ERROR_STATE && (
+        <div
+          className="mb-6 flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium"
+          style={{
+            background: 'rgba(244, 67, 54, 0.06)',
+            borderColor: 'rgba(244, 67, 54, 0.20)',
+            color: '#C62828',
+          }}
+          role="alert"
+        >
+          <AlertCircle size={16} className="shrink-0" />
+          Invalid email or password. Please try again.
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+        {/* Email */}
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-1.5 block text-sm font-medium text-[#263238]"
+          >
+            Email address
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            disabled={isLoading}
+            {...register('email')}
+            className={cn(
+              'w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-[#263238] outline-none transition-colors',
+              'placeholder:text-[#B0BEC5]',
+              'focus:border-[#E91E63] focus:ring-2 focus:ring-[rgba(233,30,99,0.15)]',
+              'disabled:cursor-not-allowed disabled:opacity-60',
+              errors.email
+                ? 'border-[rgba(244,67,54,0.60)]'
+                : 'border-[#E4E8EC] hover:border-[#C9D0D8]',
+            )}
+            placeholder="admin@qwikkle.com"
+          />
+          {errors.email && (
+            <p className="mt-1.5 text-xs text-[#C62828]" role="alert">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        {/* Password */}
+        <div>
+          <label
+            htmlFor="password"
+            className="mb-1.5 block text-sm font-medium text-[#263238]"
+          >
+            Password
+          </label>
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              disabled={isLoading}
+              {...register('password')}
+              className={cn(
+                'w-full rounded-xl border bg-white py-2.5 pl-4 pr-10 text-sm text-[#263238] outline-none transition-colors',
+                'placeholder:text-[#B0BEC5]',
+                'focus:border-[#E91E63] focus:ring-2 focus:ring-[rgba(233,30,99,0.15)]',
+                'disabled:cursor-not-allowed disabled:opacity-60',
+                errors.password
+                  ? 'border-[rgba(244,67,54,0.60)]'
+                  : 'border-[#E4E8EC] hover:border-[#C9D0D8]',
+              )}
+              placeholder="Minimum 8 characters"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9E9E9E] transition-colors hover:text-[#263238]"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+          {errors.password && (
+            <p className="mt-1.5 text-xs text-[#C62828]" role="alert">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={cn(
+            'mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-white transition-all duration-200',
+            'disabled:cursor-not-allowed disabled:opacity-70',
+            'hover:opacity-90 active:scale-[0.98]',
+          )}
+          style={{
+            background: '#E91E63',
+            boxShadow: isLoading ? 'none' : '0 4px 14px rgba(233, 30, 99, 0.30)',
+          }}
+        >
+          {isLoading && <Loader2 size={15} className="animate-spin" />}
+          {isLoading ? 'Signing in…' : 'Sign In'}
+        </button>
+      </form>
+
+      {/* Footer links */}
+      <div className="mt-6 space-y-4">
+        <button
+          type="button"
+          className="block text-sm text-[#9E9E9E] transition-colors hover:text-[#E91E63]"
+        >
+          Forgot your password?
+        </button>
+        <div className="border-t border-[#E4E8EC] pt-4">
+          <p className="text-xs text-[#B0BEC5]">
+            Having trouble? Contact your system administrator.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
