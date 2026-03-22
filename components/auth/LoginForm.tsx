@@ -7,15 +7,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { loginSchema, type LoginInput } from '@/lib/validations/auth.schemas';
-
-// Temporary: set to true to preview the error banner UI.
-// Remove this when real auth is wired up.
-const PREVIEW_ERROR_STATE = false;
+import { adminLogin } from '@/lib/api/auth';
 
 export function LoginForm(): React.ReactElement {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -25,20 +23,22 @@ export function LoginForm(): React.ReactElement {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (values: LoginInput): void => {
+  const onSubmit = async (values: LoginInput): Promise<void> => {
     setIsLoading(true);
+    setErrorMessage(null);
 
     const qkId = values.qkId.toUpperCase().endsWith('.QK')
       ? values.qkId
       : `${values.qkId}.QK`;
 
-    void qkId;
-
-    // Simulated network delay — replaced with real adminLogin() when backend is ready.
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await adminLogin({ qkId, password: values.password });
       router.push('/admin');
-    }, 1000);
+    } catch {
+      setErrorMessage('Invalid .QK ID or password. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,7 +53,7 @@ export function LoginForm(): React.ReactElement {
       </div>
 
       {/* Error banner */}
-      {PREVIEW_ERROR_STATE && (
+      {errorMessage && (
         <div
           className="mb-6 flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium"
           style={{
@@ -64,7 +64,7 @@ export function LoginForm(): React.ReactElement {
           role="alert"
         >
           <AlertCircle size={16} className="shrink-0" />
-          Invalid email or password. Please try again.
+          {errorMessage}
         </div>
       )}
 

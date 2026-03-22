@@ -109,7 +109,7 @@ function SidebarContent({
 
   // Initials for avatar — placeholder until auth is wired
   const displayName = user?.name ?? 'Admin User';
-  const displayEmail = user?.email ?? 'admin@qwikkle.com';
+  const displayIdentity = user?.qkId ?? 'admin.QK';
   const initials = displayName
     .split(' ')
     .map((w) => w[0])
@@ -171,7 +171,7 @@ function SidebarContent({
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-[#263238]">{displayName}</p>
-            <p className="truncate text-xs text-[#9E9E9E]">{displayEmail}</p>
+            <p className="truncate text-xs text-[#9E9E9E]">{displayIdentity}</p>
           </div>
           <button
             type="button"

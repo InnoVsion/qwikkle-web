@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
 /**
  * Shared Axios instance for all requests to the Go backend.
@@ -12,33 +12,42 @@ import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axio
 export const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10_000,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-apiClient.interceptors.request.use((requestConfig: InternalAxiosRequestConfig) => {
-  // Reads JWT from httpOnly cookie — token management implemented in auth session
-  if (typeof document !== 'undefined') {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('access_token='))
-      ?.split('=')[1];
-
-    if (token) {
-      requestConfig.headers.Authorization = `Bearer ${token}`;
-    }
-  }
-  return requestConfig;
-});
-
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // TODO: Implement token refresh / redirect to /login on 401 in auth session
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      console.warn('[apiClient] Unauthorized — token may be expired');
+  async (error) => {
+    if (!axios.isAxiosError(error)) {
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
+
+    const status = error.response?.status;
+    const originalRequest = error.config;
+
+    if (status !== 401 || !originalRequest) {
+      return Promise.reject(error);
+    }
+
+    const url = originalRequest.url ?? '';
+    if (url.startsWith('/admin/auth/login') || url.startsWith('/admin/auth/refresh')) {
+      return Promise.reject(error);
+    }
+
+    const configWithRetryFlag = originalRequest as typeof originalRequest & { _retry?: boolean };
+    if (configWithRetryFlag._retry) {
+      return Promise.reject(error);
+    }
+    configWithRetryFlag._retry = true;
+
+    try {
+      await apiClient.post('/admin/auth/refresh');
+      return apiClient(originalRequest);
+    } catch {
+      return Promise.reject(error);
+    }
   },
 );

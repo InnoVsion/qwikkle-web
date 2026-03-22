@@ -1,6 +1,7 @@
 export interface AdminUser {
   id: string;
-  email: string;
+  qkId: string;
+  email?: string;
   name: string;
   role: string;
   createdAt: string;
