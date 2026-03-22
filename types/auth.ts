@@ -1,6 +1,6 @@
 export interface User {
   id: string;
-  email: string;
+  qkId: string;
   name: string;
   role: 'admin' | 'editor';
 }
@@ -12,6 +12,6 @@ export interface AuthTokens {
 }
 
 export interface LoginCredentials {
-  email: string;
+  qkId: string;
   password: string;
 }

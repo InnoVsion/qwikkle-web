@@ -4,7 +4,7 @@
 import type { AdminUser } from '@/types/admin';
 
 export interface LoginPayload {
-  email: string;
+  qkId: string;
   password: string;
 }
 

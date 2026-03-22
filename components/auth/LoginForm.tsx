@@ -25,8 +25,15 @@ export function LoginForm(): React.ReactElement {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (): void => {
+  const onSubmit = (values: LoginInput): void => {
     setIsLoading(true);
+
+    const qkId = values.qkId.toUpperCase().endsWith('.QK')
+      ? values.qkId
+      : `${values.qkId}.QK`;
+
+    void qkId;
+
     // Simulated network delay — replaced with real adminLogin() when backend is ready.
     setTimeout(() => {
       setIsLoading(false);
@@ -62,34 +69,34 @@ export function LoginForm(): React.ReactElement {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
-        {/* Email */}
+        {/* Admin ID */}
         <div>
           <label
-            htmlFor="email"
+            htmlFor="qkId"
             className="mb-1.5 block text-sm font-medium text-[#263238]"
           >
-            Email address
+            Admin .QK ID
           </label>
           <input
-            id="email"
-            type="email"
-            autoComplete="email"
+            id="qkId"
+            type="text"
+            autoComplete="username"
             disabled={isLoading}
-            {...register('email')}
+            {...register('qkId')}
             className={cn(
               'w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-[#263238] outline-none transition-colors',
               'placeholder:text-[#B0BEC5]',
               'focus:border-[#E91E63] focus:ring-2 focus:ring-[rgba(233,30,99,0.15)]',
               'disabled:cursor-not-allowed disabled:opacity-60',
-              errors.email
+              errors.qkId
                 ? 'border-[rgba(244,67,54,0.60)]'
                 : 'border-[#E4E8EC] hover:border-[#C9D0D8]',
             )}
-            placeholder="admin@qwikkle.com"
+            placeholder="admin.QK"
           />
-          {errors.email && (
+          {errors.qkId && (
             <p className="mt-1.5 text-xs text-[#C62828]" role="alert">
-              {errors.email.message}
+              {errors.qkId.message}
             </p>
           )}
         </div>
