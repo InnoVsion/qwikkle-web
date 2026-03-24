@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
@@ -10,7 +10,7 @@ import { loginSchema, type LoginInput } from '@/lib/validations/auth.schemas';
 import { adminLogin } from '@/lib/api/auth';
 
 export function LoginForm(): React.ReactElement {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -33,9 +33,9 @@ export function LoginForm(): React.ReactElement {
 
     try {
       await adminLogin({ qkId, password: values.password });
-      router.replace('/admin');
-      router.refresh();
-      window.location.assign('/admin');
+      const from = searchParams.get('from');
+      const destination = from && from.startsWith('/') ? from : '/admin';
+      window.location.assign(destination);
     } catch {
       setErrorMessage('Invalid .QK ID or password. Please try again.');
     } finally {
