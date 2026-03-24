@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { Suspense } from 'react';
 import { LoginForm } from '@/components/auth/LoginForm';
 
 export const metadata: Metadata = { title: 'Sign In — Qwikkle Admin' };
@@ -86,7 +87,9 @@ export default function LoginPage(): React.ReactElement {
           <span className="font-display text-lg font-bold text-[#263238]">Qwikkle Admin</span>
         </div>
 
-        <LoginForm />
+        <Suspense fallback={null}>
+          <LoginForm />
+        </Suspense>
       </div>
     </main>
   );
