@@ -33,7 +33,9 @@ export function LoginForm(): React.ReactElement {
 
     try {
       await adminLogin({ qkId, password: values.password });
-      router.push('/admin');
+      router.replace('/admin');
+      router.refresh();
+      window.location.assign('/admin');
     } catch {
       setErrorMessage('Invalid .QK ID or password. Please try again.');
     } finally {
