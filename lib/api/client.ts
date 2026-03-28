@@ -10,12 +10,7 @@ import axios, { type AxiosInstance } from 'axios';
  * cause it to throw at build when .env.local is absent.
  */
 export const apiClient: AxiosInstance = axios.create({
-  baseURL:
-    typeof window === 'undefined'
-      ? (process.env.QWIKKLE_API_URL ??
-        process.env.API_URL ??
-        process.env.NEXT_PUBLIC_API_URL)
-      : '/api/backend',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10_000,
   withCredentials: true,
   headers: {

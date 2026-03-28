@@ -27,9 +27,8 @@ export function LoginForm(): React.ReactElement {
     setIsLoading(true);
     setErrorMessage(null);
 
-    const qkId = values.qkId.toUpperCase().endsWith('.QK')
-      ? values.qkId
-      : `${values.qkId}.QK`;
+    const raw = values.qkId.trim().toLowerCase();
+    const qkId = raw.endsWith('.qk') ? raw : `${raw}.qk`;
 
     try {
       await adminLogin({ qkId, password: values.password });
